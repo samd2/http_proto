@@ -4,7 +4,7 @@
 # Distributed under the Boost Software License, Version 1.0.
 # (See accompanying file LICENSE.txt or copy at http://boost.org/LICENSE_1_0.txt)
 
-set -e
+set -xe
 
 export DRONE_BUILD_DIR=$(pwd)
 export VCS_COMMIT_ID=$DRONE_COMMIT
@@ -34,6 +34,13 @@ common_install () {
   export BOOST_CI_SRC_FOLDER=$(pwd)
 
   . ./ci/common_install.sh
+
+  # (temporary) customizations for http_proto:
+  pwd
+  pushd $BOOST_ROOT/libs
+  git clone https://github.com/CPPAlliance/url -b develop 
+  popd
+  pwd
 }
 
 if [ "$DRONE_JOB_BUILDTYPE" == "boost" ]; then
