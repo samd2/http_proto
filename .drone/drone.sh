@@ -36,18 +36,11 @@ common_install () {
   . ./ci/common_install.sh
 
   # (temporary) customizations
-  pwd
+  pwd 
   pushd $BOOST_ROOT/libs
   git clone https://github.com/CPPAlliance/url -b develop 
   popd
   pwd
-  echo "Blabber"
-  ls -al $DRONE_BUILD_DIR || true
-  ls -al $DRONE_BUILD_DIR/.. || true
-  ls -al $DRONE_BUILD_DIR/../.. || true
-  ls -al /drone || true
-  ls -al /drone/src || true
-  
 }
 
 if [ "$DRONE_JOB_BUILDTYPE" == "boost" ]; then
