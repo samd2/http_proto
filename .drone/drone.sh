@@ -122,4 +122,41 @@ cd libs/$SELF
 mkdir __build__ && cd __build__
 cmake -DCMAKE_INSTALL_PREFIX=~/.local ..
 cmake --build . --target install
+
+elif [ "$DRONE_JOB_BUILDTYPE" == "cmake-superproject" ]; then
+
+echo '==================================> INSTALL'
+
+common_install
+
+echo '==================================> COMPILE'
+
+export CXXFLAGS="-Wall -Wextra -Werror"
+export CMAKE_OPTIONS=${CMAKE_OPTIONS:--DBUILD_TESTING=ON}
+export CMAKE_SHARED_LIBS=${CMAKE_SHARED_LIBS:-1}
+
+pwd
+
+mkdir __build_static
+cd __build_static
+cmake -DBOOST_ENABLE_CMAKE=1 -DBoost_VERBOSE=1 ${CMAKE_OPTIONS} \
+    -DBOOST_INCLUDE_LIBRARIES=$SELF ..
+cmake --build .
+ctest --output-on-failure -R boost_$SELF
+
+cd ..
+
+if [ "$CMAKE_SHARED_LIBS" = 1 ]; then
+
+mkdir __build_shared
+cd __build_shared
+cmake -DBOOST_ENABLE_CMAKE=1 -DBoost_VERBOSE=1 ${CMAKE_OPTIONS} \
+    -DBOOST_INCLUDE_LIBRARIES=$SELF -DBUILD_SHARED_LIBS=ON ..
+cmake --build .
+ctest --output-on-failure -R boost_$SELF
+
 fi
+
+fi
+
+
