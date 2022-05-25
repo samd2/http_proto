@@ -88,4 +88,37 @@ cd $BOOST_ROOT/libs/$SELF
 ci/travis/coverity.sh
 fi
 
+elif [ "$DRONE_JOB_BUILDTYPE" == "cmake1" ]; then
+
+set -xe
+
+echo '==================================> INSTALL'
+
+# already in the image
+# pip install --user cmake
+
+echo '==================================> SCRIPT'
+
+export SELF=`basename $REPO_NAME`
+BOOST_BRANCH=develop && [ "$DRONE_BRANCH" == "master" ] && BOOST_BRANCH=master || true
+echo BOOST_BRANCH: $BOOST_BRANCH
+cd ..
+git clone -b $BOOST_BRANCH --depth 1 https://github.com/boostorg/boost.git boost-root
+cd boost-root
+mkdir -p libs/$SELF
+cp -r $DRONE_BUILD_DIR/* libs/$SELF
+# git submodule update --init tools/boostdep
+git submodule update --init --recursive
+
+cd libs/$SELF
+mkdir __build__ && cd __build__
+cmake -DCMAKE_INSTALL_PREFIX=~/.local ..
+cmake --build . --target install
+#
+# cmake_install_test directory was removed. So the following test would fail.
+# cd ../test/cmake_install_test && mkdir __build__ && cd __build__
+# cmake -DCMAKE_INSTALL_PREFIX=~/.local ..
+# cmake --build .
+# cmake --build . --target check
+
 fi
