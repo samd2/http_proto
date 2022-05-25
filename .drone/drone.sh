@@ -131,7 +131,9 @@ common_install
 
 echo '==================================> COMPILE'
 
-export CXXFLAGS="-Wall -Wextra -Werror"
+# May want to re-enable -Werror
+# export CXXFLAGS="-Wall -Wextra -Werror"
+export CXXFLAGS="-Wall -Wextra"
 export CMAKE_OPTIONS=${CMAKE_OPTIONS:--DBUILD_TESTING=ON}
 export CMAKE_SHARED_LIBS=${CMAKE_SHARED_LIBS:-1}
 
