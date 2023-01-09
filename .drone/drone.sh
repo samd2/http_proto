@@ -22,7 +22,7 @@ common_install () {
     export SELF=`basename $REPO_NAME`
   fi
 
-  git clone https://github.com/boostorg/boost-ci.git boost-ci-cloned --depth 1
+  git clone -b valgrind https://github.com/sdarwin/boost-ci.git boost-ci-cloned --depth 1
   [ "$SELF" == "boost-ci" ] || cp -prf boost-ci-cloned/ci .
   rm -rf boost-ci-cloned
 
