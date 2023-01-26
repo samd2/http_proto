@@ -24,9 +24,8 @@ def main(ctx):
          # 'x86-msvc latest'
          ],
         # Standards
-        '>=11')
-
-        # '>=11', packages=['zlib1g', 'zlib1g-dev'])
+        # '>=11')
+        '>=11', packages=['zlib1g', 'zlib1g-dev'])
 
 
 # from https://github.com/boostorg/boost-ci
