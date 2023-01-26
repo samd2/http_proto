@@ -23,7 +23,7 @@ def main(ctx):
          's390x-clang latest',
          'x86-msvc latest'],
         # Standards
-        '>=11')
+        '>=11', library='http_proto')
 
 
 # from https://github.com/boostorg/boost-ci
